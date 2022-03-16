@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "93ef753b2f42e6e34dc19d2834d02f97",
+    "content-hash": "b173db9c592a1a6a680ec76175822e97",
     "packages": [
         {
             "name": "brick/math",
@@ -2267,6 +2267,57 @@
             "time": "2021-11-30T19:35:32+00:00"
         },
         {
+            "name": "phpclassic/php-shopify",
+            "version": "v1.1.22",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpclassic/php-shopify.git",
+                "reference": "59e6f8c7e8e7264e5512b13a803f186d0d916a6b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpclassic/php-shopify/zipball/59e6f8c7e8e7264e5512b13a803f186d0d916a6b",
+                "reference": "59e6f8c7e8e7264e5512b13a803f186d0d916a6b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPShopify\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Tareq Mahmood",
+                    "email": "tareqtms@yahoo.com"
+                }
+            ],
+            "description": "PHP SDK for Shopify API",
+            "homepage": "https://github.com/phpclassic/php-shopify",
+            "keywords": [
+                "php",
+                "sdk",
+                "shopify"
+            ],
+            "support": {
+                "issues": "https://github.com/phpclassic/php-shopify/issues",
+                "source": "https://github.com/phpclassic/php-shopify/tree/v1.1.22"
+            },
+            "time": "2022-02-23T06:32:49+00:00"
+        },
+        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
@@ -3106,6 +3157,60 @@
             "time": "2021-09-25T23:10:38+00:00"
         },
         {
+            "name": "robwittman/shopify-php-sdk",
+            "version": "v2.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/robwittman/shopify-php-sdk.git",
+                "reference": "d2867b2323f0d76f32e8a42bf36d4aa0ee9ed8db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/robwittman/shopify-php-sdk/zipball/d2867b2323f0d76f32e8a42bf36d4aa0ee9ed8db",
+                "reference": "d2867b2323f0d76f32e8a42bf36d4aa0ee9ed8db",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^6.2 | ^7.2",
+                "php": ">=7.2",
+                "psr/log": "^1.0"
+            },
+            "require-dev": {
+                "overtrue/phplint": "^0.2.4",
+                "phpunit/phpunit": "^5.1",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/includes.php"
+                ],
+                "psr-4": {
+                    "Shopify\\": "src/",
+                    "Shopify\\Test\\": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP SDK for Shopify API",
+            "homepage": "http://github.com/robwittman/shopify-php-sdk",
+            "keywords": [
+                "api",
+                "ecommerce",
+                "php",
+                "shopify"
+            ],
+            "support": {
+                "issues": "https://github.com/robwittman/shopify-php-sdk/issues",
+                "source": "https://github.com/robwittman/shopify-php-sdk/tree/v2.4.2"
+            },
+            "time": "2021-03-07T00:45:44+00:00"
+        },
+        {
             "name": "sensio/framework-extra-bundle",
             "version": "v6.2.6",
             "source": {
@@ -3243,6 +3348,51 @@
                 "source": "https://github.com/Shopify/shopify-php-api/tree/v1.0.1"
             },
             "time": "2021-11-30T16:25:06+00:00"
+        },
+        {
+            "name": "stephane888/wbu-shopify",
+            "version": "dev-1x",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stephane888/wbu-shopify.git",
+                "reference": "49e5e53a0130a2d788ddccdafd180e55333ae18f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stephane888/wbu-shopify/zipball/49e5e53a0130a2d788ddccdafd180e55333ae18f",
+                "reference": "49e5e53a0130a2d788ddccdafd180e55333ae18f",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "*",
+                "php": "^7.2",
+                "phpclassic/php-shopify": "^1.1"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stephane888\\WbuShopify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "stephane888",
+                    "email": "kksasteph888@gmail.com",
+                    "homepage": "http://wb-universe.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "API to manage a shopify site",
+            "support": {
+                "issues": "https://github.com/stephane888/wbu-shopify/issues",
+                "source": "https://github.com/stephane888/wbu-shopify/tree/1x"
+            },
+            "time": "2022-02-22T19:40:33+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -9497,7 +9647,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "stephane888/wbu-shopify": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

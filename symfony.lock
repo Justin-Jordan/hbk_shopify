@@ -116,6 +116,9 @@
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
+    "phpclassic/php-shopify": {
+        "version": "v1.1.22"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -161,6 +164,9 @@
     "ramsey/uuid": {
         "version": "4.2.3"
     },
+    "robwittman/shopify-php-sdk": {
+        "version": "v2.4.2"
+    },
     "sensio/framework-extra-bundle": {
         "version": "6.2",
         "recipe": {
@@ -175,6 +181,9 @@
     },
     "shopify/shopify-api": {
         "version": "v1.0.1"
+    },
+    "stephane888/wbu-shopify": {
+        "version": "dev-1x"
     },
     "symfony/amqp-messenger": {
         "version": "v5.4.5"
