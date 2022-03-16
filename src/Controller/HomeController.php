@@ -35,10 +35,6 @@ class HomeController extends AbstractController
             'domain' => '',
         );
 
-        $shop = new IntegrationToken($conf);
-
-        $shop->get()
-
         $prod = new Product($configs);
         dd($prod->getProducts());
         
