@@ -8,10 +8,13 @@ use Shopify\Context;
 use Shopify\Auth\FileSessionStorage;
 use Shopify\Api;
 use Shopify\Service\ProductService;
+use Stephane888\WbuShopify\ApiRest\Articles\Articles;
 use Stephane888\WbuShopify\ApiRest\Authentification\IntegrationToken;
+use Stephane888\WbuShopify\ApiRest\Blog\Blog;
 use Stephane888\WbuShopify\ApiRest\Prodcuts\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,75 +27,62 @@ class HomeController extends AbstractController
      */
     public function index(ContainerBagInterface $params): Response
     {
-        $configs = array(
-            "api_key" => '',
-            'shop_domain' => '',
-            'secret' => ''
-        );
-
-        $conf = array(
-            "token" => '',
-            'domain' => '',
-        );
+        $configs = array();
 
         $prod = new Product($configs);
+        return $this->json($prod);
         dd($prod->getProducts());
-        
+
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }
 
+    
+
+
     /**
-     * @Route("/token", name="app_token")
+     * @Route("/shopify/request.php", name="app_request")
      */
-    public function generateToken(): Response
+    public function request(ContainerBagInterface $params, Request $request): Response
     {
-        $api_key = "355b616368888c81a208d17683ab1a94";
-        $shared_secret = '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';
+        $shopDomain = $this->getParameter('app.shopify_host');
+        $apiKey = $this->getParameter('app.shopify_api_key');
+        $secret = $this->getParameter('app.shopify_secret');
+        $token = $this->getParameter('app.shopify_token');
 
-        // Set variables for our request
-        $shared_secret = "TBB5wltKarRtKn5mUVZck9RxHePNN6Jo";
-        $params = $_GET; // Retrieve all request parameters
-        $hmac = $_GET['hmac']; // Retrieve HMAC request parameter
-        $params = array_diff_key($params, array('hmac' => '')); // Remove hmac from params
-        ksort($params); // Sort params lexographically
+        $configs = array(
+            'shop_domain' => $shopDomain,
+            'api_key' => $apiKey,
+            'secret' => $secret,
+            'token' => $token
+        );
 
-        // Compute SHA256 digest
-        $computed_hmac = hash_hmac('sha256', http_build_query($params), $shared_secret);
+        $csrfToken = $request->headers->get('x-csrf-token');
+        $dataBaseConfig = json_decode($request->getContent());
+        $data = [];
 
-        // Use hmac data to check that the response is from Shopify or not
-        if (hash_equals($hmac, $computed_hmac)) {
-            // VALIDATED
-        } else {
-            // NOT VALIDATED – Someone is trying to be shady!
+        switch ($csrfToken) {
+            case 'shopify_load_blogs_with_metafield':
+                $blog = new Blog($configs);
+                $shopifyLoadBlog = $blog->getBlogs();
+                break;
+            
+            default:
+                
+                break;
         }
 
-        // Set variables for our request
-        $query = array(
-            "client_id" => $api_key, // Your API key
-            "client_secret" => $shared_secret, // Your app credentials (secret key)
-            "code" => $params['code'] // Grab the access key from the URL
-        );
-        
-        // Generate access token URL
-        $access_token_url = "https://" . $params['shop'] . "/admin/oauth/access_token";
-        
-        //dd($access_token_url);
-        // Configure curl client and execute request
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $access_token_url);
-        curl_setopt($ch, CURLOPT_POST, count($query));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($query));
-        $result = curl_exec($ch);
-        curl_close($ch);
 
-        // Store the access token
-        $result = json_decode($result, true);
-        $access_token = $result['access_token'];
+        $data = [
+            "token" => $csrfToken,
+            "return" =>[
+                "shopify_load_blog" => $shopifyLoadBlog,
+            ],
+        ];
 
-        dd($access_token);
+
+        return $this->json($data);
     }
 }
