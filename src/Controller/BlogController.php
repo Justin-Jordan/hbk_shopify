@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ShopifyBlogType;
 use App\Service\ShopifyApiService;
 use Shopify\Clients\Rest;
 use Shopify\Context;
@@ -20,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
-class HomeController extends AbstractController
+class BlogController extends AbstractController
 {
     /**
      * @Route("/", name="app_home")
@@ -39,7 +40,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    
+
 
 
     /**
@@ -68,21 +69,59 @@ class HomeController extends AbstractController
                 $blog = new Blog($configs);
                 $shopifyLoadBlog = $blog->getBlogs();
                 break;
-            
+
             default:
-                
+
                 break;
         }
 
 
         $data = [
             "token" => $csrfToken,
-            "return" =>[
+            "return" => [
                 "shopify_load_blog" => $shopifyLoadBlog,
             ],
         ];
 
 
         return $this->json($data);
+    }
+
+    /**
+     * @Route("/blog/create", name="app_blog_create")
+     */
+    public function createBlog(ContainerBagInterface $params, request $request): Response
+    {
+
+        $form = $this->createForm(ShopifyBlogType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $shopDomain = $this->getParameter('app.shopify_host');
+            $apiKey = $this->getParameter('app.shopify_api_key');
+            $secret = $this->getParameter('app.shopify_secret');
+            $token = $this->getParameter('app.shopify_token');
+
+            $configs = array(
+                'shop_domain' => $shopDomain,
+                'api_key' => $apiKey,
+                'secret' => $secret,
+                'token' => $token
+            );
+
+            $title = $form->get('title')->getData();
+
+            $blog = new Blog($configs);
+
+            $result = $blog->addBlog($title);
+            return $this->json($result);
+        }
+
+
+
+        return $this->render('blog/create-blog.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
