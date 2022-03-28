@@ -107,6 +107,9 @@
     "guzzlehttp/psr7": {
         "version": "2.1.0"
     },
+    "kint-php/kint": {
+        "version": "3.3"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
@@ -127,6 +130,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.6.0"
+    },
+    "phpmailer/phpmailer": {
+        "version": "v6.6.0"
     },
     "phpstan/phpdoc-parser": {
         "version": "1.2.0"
@@ -181,6 +187,9 @@
     },
     "shopify/shopify-api": {
         "version": "v1.0.1"
+    },
+    "stephane888/debug": {
+        "version": "1.0.6"
     },
     "stephane888/wbu-shopify": {
         "version": "dev-1x"
