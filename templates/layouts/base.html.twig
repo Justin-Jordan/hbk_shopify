@@ -1,22 +1,57 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block bodyjs %}{% endblock %}
-        {% block body %}{% endblock %}
-        {% block bodyjs_end %}
-{% endblock %}
-    </body>
+		{% block stylesheets %}
+			<link rel="icon" type="image/png" sizes="32x32" href="//cdn.shopify.com/s/files/1/0013/2123/8594/t/5/assets/favicon-32x32.png?1823137142525308715">
+			<link rel="stylesheet" href="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.min.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.theme.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/plugin/bootstrap-4.1.1/dist/css/bootstrap.min.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/brands.min.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/solid.min.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/regular.min.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/dashboard.css") }}">
+			<link rel="stylesheet" href="{{ asset("/comptability/style.css") }}">
+			<link
+			rel="stylesheet" href="{{ asset("/app/ressources/css/style.css") }}">
+		{#{ encore_entry_link_tags('app') }#}
+		{% endblock %}
+
+		{% block javascripts %}
+			{#{ encore_entry_script_tags('app') }#}
+			<script src="{{ asset("/comptability/js/jquery.min.js") }}"></script>
+			<script src="{{ asset("/comptability/js/vuejs/vue.js") }}"></script>
+			<script src="{{ asset("/comptability/plugin/chart/chart.min.js") }}"></script>
+			<script src="{{ asset("/comptability/plugin/chart/vue-chartjs.min.js") }}"></script>
+		{% endblock %}
+	</head>
+	<body>
+		{% block bodyjs %}
+			<script src="{{ asset("/comptability/js/vuejs/vuejs_component.js") }}"></script>
+			<script src="{{ asset("/comptability/js/config.js") }}"></script>
+			<script src="{{ asset("/componnets-vuejs/js/form-elements.js") }}"></script>
+			<script src="{{ asset("/componnets-vuejs/files/lib/tg/tabGes.umd.min.js") }}"></script>
+		{% endblock %}
+
+		{% block body %}{% endblock %}
+
+		{% block bodyjs_end %}
+			<!-- Jquery-ui -->
+			<script src="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.min.js")}}"></script>
+			<!-- Bootstrap core JavaScript
+			    ================================================== -->
+			<!-- Placed at the end of the document so the pages load faster -->
+			<script src="{{ asset("/comptability/plugin/bootstrap-4.1.1/assets/js/vendor/popper.min.js")}}"></script>
+			<script src="{{ asset("/comptability/plugin/bootstrap-4.1.1/dist/js/bootstrap.min.js")}}"></script>
+			<script src="{{ asset("/comptability/plugin/js-cookie/js.cookie.min.js")}}"></script>
+		{% endblock %}
+	</body>
 </html>
