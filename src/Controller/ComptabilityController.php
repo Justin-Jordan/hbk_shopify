@@ -14,7 +14,7 @@ class ComptabilityController extends AbstractController
     public function index(): Response
     {
         return $this->render('comptability/index.html.twig', [
-            'controller_name' => 'ComptabilityController',
+            
         ]);
     }
 }
