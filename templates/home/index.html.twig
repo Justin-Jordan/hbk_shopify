@@ -1,0 +1,34 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block title %}Mini Admin Nutribe
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="icon" type="image/png" sizes="32x32" href="//cdn.shopify.com/s/files/1/0013/2123/8594/t/5/assets/favicon-32x32.png?1823137142525308715">
+	<link rel="stylesheet" href="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.min.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.theme.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/plugin/bootstrap-4.1.1/dist/css/bootstrap.min.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/brands.min.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/solid.min.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/regular.min.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/dashboard.css") }}">
+	<link rel="stylesheet" href="{{ asset("/comptability/style.css") }}">
+	<link rel="stylesheet" href="{{ asset("/app/ressources/css/style.css") }}">
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset("/comptability/js/jquery.min.js") }}"></script>
+	<script src="{{ asset("/comptability/js/vuejs/vue.js") }}"></script>
+	<script src="{{ asset("/comptability/plugin/chart/chart.min.js") }}"></script>
+	<script src="{{ asset("/comptability/plugin/chart/vue-chartjs.min.js") }}"></script>
+{% endblock %}
+
+{% block bodyjs %}
+	<script src="{{ asset("/comptability/js/chart/vuejs/vuejs_component.js") }}"></script>
+	<script src="{{ asset("/comptability/js/config.js") }}"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+		{% include "layouts/_nav.html.twig" %}
+	</div>
+{% endblock %}

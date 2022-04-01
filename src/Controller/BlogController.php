@@ -23,23 +23,6 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 class BlogController extends AbstractController
 {
-    /**
-     * @Route("/", name="app_home")
-     */
-    public function index(ContainerBagInterface $params): Response
-    {
-        $configs = array();
-
-        $prod = new Product($configs);
-        return $this->json($prod);
-        dd($prod->getProducts());
-
-
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
-    }
-
 
 
 

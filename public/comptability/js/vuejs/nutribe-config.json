@@ -1,0 +1,41 @@
+{
+  "tax": {
+    "tax_rate_ref": {
+      "_5precent": {
+        "value": 0,
+        "label": "5,5 % TVA FR"
+      },
+      "_20precent": {
+        "value": 0,
+        "label": "20 % TVA FR"
+      }
+    },
+    "tax_code_ref": {
+      "_5precent": {
+        "value": 0,
+        "label": "5,5 % TVA FR"
+      },
+      "_20precent": {
+        "value": 0,
+        "label": "20 % TVA FR"
+      },
+      "withinfrance": {
+        "value": 0,
+        "label": "Pas de TVA FR (Ventes)"
+      },
+      "outsidefranceWitheu": {
+        "value": 1,
+        "label": "Pas de TVA EU (Ventes)"
+      },
+      "franceoverseas": {
+        "value": 21,
+        "label": "Pas de TVA DOM"
+      },
+      "outsideeu": {
+        "value": 22,
+        "label": "Pas de TVA Export"
+      }
+    }
+  }
+}
+
