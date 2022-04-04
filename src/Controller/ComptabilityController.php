@@ -26,4 +26,12 @@ class ComptabilityController extends AbstractController
     {
         return $this->render('comptability/order.html.twig');
     }
+
+    /**
+     * @Route("/amazon", name="app_comptability_amazon")
+     */
+    public function amazon(): Response
+    {
+        return $this->render('comptability/amazon.html.twig');
+    }
 }

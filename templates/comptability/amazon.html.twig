@@ -1,0 +1,89 @@
+{% extends "layouts/comptability-base.html.twig" %}
+
+{% block body %}
+
+
+	<!-- Déplacer le bouton du haut vers le bas. -->
+
+	<section id="compta-amazon" class="mt-5">
+		<manage-connect @ev_getconfig__manage_connect="getconfig__manage_connect" :requests="requests" :show_button_filter="false" :template_additional_filter="'compta-add-filtre'"></manage-connect>
+
+		<div class="my-3">{% include "layouts/comptability/_main-nav.html.twig" %}</div>
+		<display-company-infos></display-company-infos>
+
+		<alert :show_alert="show_alert" :alert_attribut_class="class_alert" :alert_message="alert_message" @ev_alert_close="alert_close_static"></alert>
+
+		<div class="d-block mt-3 p-2 mt-5 mw-600 ">
+			<!-- <input_select_v2 :input="date_imports" :label="'Selectionner la periode'" :options="list_files" @ev_input="on_change"></input_select_v2> -->
+			<!--
+								  <filtre @ev_filter_datas="filter_datas" :database_config="databaseConfig" v-show="databaseConfig === 'prodNutribe'"></filtre>
+								--><manage-connect @ev_getconfig__manage_connect="getconfig__manage_connect" :custom_class="'p-0 mt-0'" :custom_class_block_filter="'col-lg-12'" :show_select_qb="false" :template_additional_filter="'compta-add-filtre'"> </manage-connect>
+		</div>
+
+		<div class="d-flex justify-content-end container-export p-2">
+			<export-excel :show_text="show_text_download_file" :tableau_rows="tableau_ordersexcel_format" :use_mode="'table'" :namefile="namefile_excel" :waiting="is_runnings_excel" :reverse_json_fields="reverse_json_fields_excel"></export-excel>
+		</div>
+		<div class="mt-3 mb-4">
+			<h5>Tableau commandes</h5>
+			<tableau_gestion :show_id="show_id" :show_action="show_action" class="commandes-list compta-amazon orders" :rows="tableau_rows" :headers="tableau_headers" :footers="footers" :show_footer="show_footer" :align_header="align_header" :show_reel_index="show_reel_index"></tableau_gestion>
+		</div>
+		<div class="mt-3 mb-4">
+			<h5>
+				Tableau remboursements
+			</h5>
+			<tableau_gestion :show_id="show_id" :show_action="show_action" class="commandes-list compta-amazon refunds" :rows="tableau_rows_refund" :headers="tableau_headers_refund" :footers="footers" :show_footer="show_footer" :align_header="align_header" :show_reel_index="show_reel_index"></tableau_gestion>
+		</div>
+		<send_data_ajax :url="url_post" :headers="headers" @ev_data_from_ajax="data_from_ajax" :datas="post_datas" :trigger_loanding="trigger_post_loanding"></send_data_ajax>
+		<load_data_ajax_get :url="url_get" :datas="querys" :headers="headers" @ev_data_from_ajax="data_from_ajax" :trigger_loanding="trigger_loanding"></load_data_ajax_get>
+
+	</section>
+
+	<template id="template-compta-add-filtre">
+		<div>
+			<div class="row">
+				<div class="col-lg-6">
+					<input_select_v2 :label="'Paiement Amazon'" :input="settlement_id" :options="list_files"></input_select_v2>
+				</div>
+				<div class="col-lg-6">
+					<input_select_v2 :label="'Zone'" :input="zone_livraison" :options="zones"></input_select_v2>
+				</div>
+			</div>
+			<load_data_ajax_get :url="url_get" :datas="querys" :headers="ajax_headers" @ev_data_from_ajax="data_from_ajax" :trigger_loanding="trigger_loanding"></load_data_ajax_get>
+		</div>
+	</template>
+	<template id="template-filtre">
+		<div>
+			<div class="container-popup">
+				<button class="btn btn-outline-success " @click="show_hide_popup">
+					Filtre
+					<i class="fas fa-filter pl-1"></i>
+				</button>
+				<div class="container-body " :class="[ (show_popup)? '':'d-none' ]">
+					<div class="border p-3 mt-2">
+						<div class="d-flex mb-3 justify-content-between">
+							<input_select_v2 class="mv-30pc" :label="'Date'" :input="input_date" :options="options_date"></input_select_v2>
+							<input_datepicker class="mv-30pc" :defaultvalue="defaultvalue_firstday" v-model="input_firstday" :label="label_firstday" id_html="datefirstdaydfr25"></input_datepicker>
+							<input_datepicker class="mv-30pc" :defaultvalue="defaultvalue_firstday2" v-model="input_firstday2" :label="label_firstday2" id_html="datefirstday254fd"></input_datepicker>
+						</div>
+						<input_select_v2 :label="'Paiement Amazon'" :input="date_imports" :options="list_files"></input_select_v2>
+						<div class="d-flex justify-content-between">
+							<button class="btn btn-secondary btn-sm " @click="reinitialisation">
+								Restaurer
+							</button>
+							<button class="btn btn-outline-success btn-sm " @click="apply_filter">
+								Appliquer
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="full-cover" :class="[ (show_popup)? '':'d-none' ]" @click="show_hide_popup"></div>
+			</div>
+			<load_data_ajax_get :url="url_get" :datas="querys" :headers="ajax_headers" @ev_data_from_ajax="data_from_ajax" :trigger_loanding="trigger_loanding"></load_data_ajax_get>
+		</div>
+	</template>
+	<!-- shopify and Amazone -->
+	<script src="{{ asset("componnets-vuejs/files/lib/ExportExcel/ExportExcel.umd.min.js")}}"></script>
+	<script type="text/javascript" src="{{ asset("/comptability/js/compta-amazon.js")}}"></script>
+
+
+{% endblock %}
