@@ -1,0 +1,1037 @@
+<template id="form-template">
+  <form :class="classe">
+    <div v-for="(field, index) in fields">
+      <formfield :renderfield="field" :model="model0" @ev_saveimage_by_parent="saveImage2"></formfield>
+    </div>
+    <div class="d-inline-block w-100">
+      <span class="btn " :class="submit.classe" @click="save_f2" v-if="submit.show">${submit.label}<i class=" b-inline-block ml-2 fas fa-save"></i>
+      </span>
+    </div>
+  </form>
+</template>
+<!-- form-template-input-text -->
+<template id="form-template-input-text">
+  <div>
+    <label :for="id_html">${label}</label>
+    <input :id="id_html" class="form-control" type="text" :name="name">
+  </div>
+</template>
+
+<!-- form-template-input-datepicker -->
+<template id="form-template-input-datepicker">
+  <div>
+    <label :for="id_html">${label}</label>
+    <div class="input-group mb-2">
+      <input :id="id_html" class="form-control" v-model="input.value" type="text" @input="oninput">
+      <div class="input-group-prepend">
+        <button class="input-group-text ui-datepicker-trigger" :id="id_html_trigger">
+          <i class="far fa-calendar-alt"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- template wainting -->
+<template id="template-waitingload">
+  <div v-if="waitingload" class="wainting load">
+    <div class="bg-white p-4">
+      <div class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- form-template-inputsubmit -->
+<template id="form-template-inputsubmit">
+  <span class="btn " :class="custom_class" @click="savef">${label}<i class=" ml-2 " :class="icone"></i>
+  </span>
+</template>
+
+<!-- form-template-input-radio -->
+<template id="form-template-input-radio">
+  <div>
+    <label>${field.label}</label>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" v-model="model[field.model].value" :id="id_html" :name="name" :value="value_on">
+      <label class="form-check-label" :for="id_html">${field.textOn}</label>
+
+      <input class="form-check-input" type="radio" v-model="model[field.model].value" :id="id_html_off" :name="name" :value="value_off">
+      <label class="form-check-label" :for="id_html_off">${field.textOff}</label>
+    </div>
+  </div>
+</template>
+
+<!-- form-template-input-checkbox -->
+<template id="form-template-input-checkbox">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" :id="id_html" :checked="value" @change="changeaction">
+    <label :for="id_html">${label}</label>
+  </div>
+</template>
+
+<!-- form-template-input-select -->
+<template id="form-template-input-image">
+  <div>
+    <div class="file-upload-form">
+      <label>${field.label}
+      </label>
+      <input type="file" @change="previewImage" accept="image/*">
+    </div>
+    <div class="image-preview" v-if="model[field.model].image_data.length > 0">
+      <div v-for="(img, index) in model[field.model].image_data" class="border p-3 mb-3 ">
+        <div class="row">
+          <div class="col-sm-3">
+            <img class="preview img-fluid img-thumbnail" :src="img">
+          </div>
+          <div class="col-sm-6"></div>
+          <div class="col-sm-3">
+            <span class="btn btn-outline-danger mt-3" @click="remove_image(index)">Remove<i class=" b-inline-block ml-2 fas fa-trash"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- form-template-input-autocomplete -->
+<template id="form-template-input-autocomplete">
+  <div>
+    <label :for="id_html">${field.label}</label>
+    <input :id="id_html" class="form-control" type="text" v-model="model[field.model].label_term" @keyup="autocomplete_function">
+    <div class="">serach autocomplete</div>
+  </div>
+</template>
+
+<!-- MODAL for form :settings_base="sub_settings" :submit="sub_submit" -->
+<template id="bs-modal">
+  <div class="modal fade vertical-align" :id="modalid" tabindex="-1" role="dialog" :aria-labelledby="modallabel">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" v-if="showheader">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">${header}</h4>
+        </div>
+        <div class="modal-body">
+          <component v-bind:is="template_modalbody" :box_infos="body" :field="field" :model="model" :fields="sub_fields" :model0="sub_models" @ev_saveform="saveform" :bundle="bundle"></component>
+        </div>
+        <div class="modal-footer" v-if="showfooter">
+          <button type="button" class="btn btn-outline-primary btn-sm float-left text-lowercase" @click="changetemplate">${addcontent}</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- form-template-select-in-modal -->
+<template id="form-template-select-in-modal">
+  <div>
+    <label :for="id_html">${field.label}</label>
+    <div class="input-group" @click="displayOnModal">
+      <input :id="id_html" class="form-control" type="text" v-model="model[field.model].label_node">
+      <div class="input-group-btn">
+        <div class="btn btn-outline-info">Ajouter
+          <i class=" b-inline-block ml-2 fas fa-plus"></i>
+        </div>
+      </div>
+    </div>
+    <container-modal :modalbody="datas" :model="model" :field="field"></container-modal>
+  </div>
+</template>
+
+<!-- template-search-box -->
+<template id="template-search-box">
+  <div>
+    <input_text :label="label" :name="nameinput" :id_html="id_html"></input_text>
+    <tableau :headers="box_infos.headers" :rows="box_infos.datas" :model="model" :field="field"></tableau>
+  </div>
+</template>
+
+<!-- tableau -->
+<template id="tableau-template">
+  <div>
+    <table class="table table-striped" v-if="table_actif">
+      <thead v-if="show_header" class="thead-light">
+        <tr>
+          <th ># id</th>
+          <th v-for="colonne in headers">${colonne}</th>
+          <th v-if="show_action">Action</th>
+        </tr>
+      </thead>
+      <tbody v-if="numberlevel() == 'array'">
+        <tr v-for="(colonnes, index) in rows" @click="select_and_close(index)">
+          <td>
+            <span v-if="show_action" class="text-info btn-sm pt-0 pl-0" @click="move(index)">
+              <i class="fas fa-expand-arrows-alt"></i>
+            </span>
+            <span class="pr-2 text-muted d-inline-block">${index}</span>
+          </td>
+          <td v-for="colonne in colonnes">${colonne}</td>
+          <td v-if="show_action">
+            <span class="text-info btn-sm pt-0 pl-0" @click="modifier(index)">
+              <i class="far fa-edit"></i>
+            </span>
+            <span class="text-danger btn-sm pt-0 pl-0" @click="supprimer(index)">
+              <i class="far fa-trash-alt"></i>
+            </span>
+            <span class="text-primary btn-sm pt-0 pl-0" @click="move_to_top(index)">
+              <i class="fas fa-arrows-alt-v"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-if="numberlevel() == 'string'">
+        <tr v-for="(colonnes, index) in rows" @click="select_and_close(index)">
+          <td>
+            <span class="pr-2 text-muted d-inline-block">${index}</span>
+            <span v-if="show_action" class="text-info btn-sm pt-0 pl-0" @click="move(index)">
+              <i class="fas fa-expand-arrows-alt"></i></span></td>
+          <td >${colonnes}</td>
+          <td v-if="show_action">
+            <span class="text-info btn-sm pt-0 pl-0" @click="modifier(index)">
+              <i class="far fa-edit"></i>
+            </span>
+            <span class="text-danger btn-sm pt-0 pl-0" @click="supprimer(index)">
+              <i class="far fa-trash-alt"></i>
+            </span>
+            <span class="text-primary btn-sm pt-0 pl-0" @click="move_to_top(index)">
+              <i class="fas fa-arrows-alt-v"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div v-if="show_empty_message" class="alert alert-info mt-3" role="alert">${empty_message}</div>
+  </div>
+</template>
+
+<!-- tableau -->
+<template id="tableau-template-gestion">
+  <div class="tables">
+    <div class="bs-example widget-shadow">
+      <h4 v-if="show_title">${table_title}</h4>
+      <table class="table table-striped" v-if="table_actif">
+        <thead v-if="show_header" class="thead-light">
+          <tr>
+            <th v-if="show_id">#
+            </th>
+            <th v-for="(colonne, index) in headers" :class="buildClass_TD(index, true)">${renderHeader(colonne)}</th>
+            <th v-if="show_action">Action</th>
+          </tr>
+        </thead>
+        <tfoot v-if="show_footer" class="thead-light">
+          <tr>
+            <th v-for="footer in footers_build()" :colspan="footer.colspan">${footer.label}</th>
+            <th v-if="show_action"></th>
+          </tr>
+        </tfoot>
+        <tbody v-if="numberlevel() == 'array' && align_header " align="entete">
+          <tr v-for="(colonnes, index) in rows" :class="buildClass_TR(colonnes)">
+            <td v-if="show_id">
+              <span v-if="action.drap" class="text-info btn-sm pt-0 pl-0" @click="move(index)">
+                <i class="fas fa-expand-arrows-alt"></i>
+              </span>
+              <span class="pr-2 text-muted d-inline-block">${renderIndex(index)}</span>
+            </td>
+            <td v-for="(colonne, key) in headers" v-html="colonnes[key]" :class="buildClass_TD(key, true, colonnes)"></td>
+            <td v-if="show_action">
+              <span v-if="colonnes['status'] != 'pending' && colonnes['plateforme'] == 'shopify'" class="  pt-0 pl-0">
+                <img class="icone click-pointer" src="/comptabilte/img/icon-file-22.jpg" @click="create_invoice(index, colonnes['plateforme'])">
+                <span v-html="text_before(colonnes)" class="d-inline-block ml-1" :id="'text'+index"></span>
+              </span>
+              <span v-if="colonnes['status'] != 'pending' && colonnes['plateforme'] == 'amazon' && colonnes['seller_sku']" class="pt-0 pl-0">
+                <img class="icone click-pointer" src="/comptabilte/img/icon-file-22.jpg" @click="create_invoice(index, colonnes['plateforme'])">
+                <span v-html="text_before(colonnes)" class="d-inline-block ml-1" :id="'text'+index"></span>
+              </span>
+              <!-- <pre >${colonnes}</pre> -->
+              <span v-if="action.update" class="text-info btn-sm pt-0 pl-0" @click="modifier(index)">
+                <i class="far fa-edit"></i>
+              </span>
+              <span v-if="action.delete" class="text-danger btn-sm pt-0 pl-0" @click="supprimer(index)">
+                <i class="far fa-trash-alt"></i>
+              </span>
+              <span v-if="action.move" class="text-primary btn-sm pt-0 pl-0" @click="move_to_top(index)" data-original-title="activé / restorer" title="activé / restorer" data-toggle="tooltip">
+                <i class="fas fa-arrows-alt-v"></i>
+              </span>
+              <div class="dropdown " :id="dropdowncustom(index)" v-if="action.update">
+                <div class="dropdown-menu">
+                  <prepareform_table :datas="colonnes" :identifiant="index" @ev_close_dropdown="close_dropdown"></prepareform_table>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-if="numberlevel() == 'array' && align_header ==='false' ">
+          <tr v-for="(colonnes, index) in rows" @click="select_and_close(index)">
+            <td>
+              <span v-if="action.drap" class="text-info btn-sm pt-0 pl-0" @click="move(index)">
+                <i class="fas fa-expand-arrows-alt"></i>
+              </span>
+              <span class="pr-2 text-muted d-inline-block">${index}</span>
+            </td>
+            <td v-for="(colonne, key) in colonnes">${key} : ${colonne}</td>
+            <td v-if="show_action">
+              <span v-if="action.update" class="text-info btn-sm pt-0 pl-0" @click="modifier(index)">
+                <i class="far fa-edit"></i>
+              </span>
+              <span v-if="action.delete" class="text-danger btn-sm pt-0 pl-0" @click="supprimer(index)">
+                <i class="far fa-trash-alt"></i>
+              </span>
+              <span v-if="action.move" class="text-primary btn-sm pt-0 pl-0" @click="move_to_top(index)" data-original-title="activé / restorer" title="activé / restorer" data-toggle="tooltip">
+                <i class="fas fa-arrows-alt-v"></i>
+              </span>
+              <div class="dropdown " :id="dropdowncustom(index)" v-if="action.update">
+                <div class="dropdown-menu">
+                  <prepareform_table :datas="colonnes" :identifiant="index" @ev_close_dropdown="close_dropdown"></prepareform_table>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tbody v-else-if="numberlevel() == 'string'">
+          <tr v-for="(colonnes, index) in rows" @click="select_and_close(index)">
+            <td>
+              <span class="pr-2 text-muted d-inline-block">${index}</span>
+              <span v-if="show_action" class="text-info btn-sm pt-0 pl-0" @click="move(index)">
+                <i class="fas fa-expand-arrows-alt"></i></span></td>
+            <td >${colonnes}</td>
+            <td v-if="show_action">
+              <span class="text-info btn-sm pt-0 pl-0" @click="modifier(index)">
+                <i class="far fa-edit"></i>
+              </span>
+              <span class="text-danger btn-sm pt-0 pl-0" @click="supprimer(index)">
+                <i class="far fa-trash-alt"></i>
+              </span>
+              <span class="text-primary btn-sm pt-0 pl-0" @click="move_to_top(index)" data-original-title="activé / restorer" title="activé / restorer" data-toggle="tooltip">
+                <i class="fas fa-arrows-alt-v"></i>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <component v-bind:is="template_footer" @ev_savedatas="savedatas"></component>
+    </div>
+    <waitingload_multibuoule :waitingload="waitingload"></waitingload_multibuoule>
+    <div v-if="show_empty_message" class="alert alert-info mt-3" role="alert">${empty_message}</div>
+  </div>
+</template>
+
+<template id="template-tableau-trash">
+  <div >
+    <!-- données activées -->
+    <tableau_gestion
+      :rows="datas_rows"
+      :empty_message="empty_message"
+      :headers="headers"
+      :show_action="show_action"
+      :table_footer_actif="table_footer_actif"
+      :template_footer="template_footer"
+      :show_title="show_title"
+      :table_title="table_title"
+      :action="action_table_active"
+      @ev_delete="action_delete"
+      @ev_savedatas="savedatas"></tableau_gestion>
+    <!-- données désactivées -->
+    <tableau_gestion :rows="datas_trash" :empty_message="empty_message" :headers="headers" :show_action="show_action" :show_title="show_title" :table_title="table_title_trash" @ev_restore="action_restore"></tableau_gestion>
+  </div>
+</template>
+
+<!-- profile -->
+<template id="template-profile">
+  <div class="profile_details">
+    <ul>
+      <li class="dropdown profile_details_drop">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <div class="profile_img">
+            <span class="prfil-img"><img v-bind:src="userinfos.image_url" alt="" class="img-responsive">
+            </span>
+            <div class="user-name">
+              <p>${ userinfos.name }</p>
+              <span>${ userinfos.function_user }</span>
+            </div>
+            <i class="fa fa-angle-down lnr"></i>
+            <i class="fa fa-angle-up lnr"></i>
+            <div class="clearfix"></div>
+          </div>
+        </a>
+        <ul class="dropdown-menu drp-mnu">
+          <li>
+            <a href="#">
+              <i class="fa fa-user"></i>
+              Mon compte
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-cog"></i>
+              Settings
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="fa fa-suitcase"></i>
+              Profile</a>
+          </li>
+          <li>
+            <a href="/user/logout">
+              <i class="fas fa-sign-out-alt"></i>
+              Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<!-- fas fa-dollar -->
+<template id="template-widget1">
+  <div class="col-md-3 widget widget1">
+    <div class="r3_counter_box">
+      <i class="pull-left fa  icon-rounded" :class="icone"></i>
+      <div class="stats">
+        <h5>
+          <strong>${number}</strong>
+        </h5>
+        <span>${label}</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- template charts -->
+<template id="template-chart">
+  <div v-show="chart_show_graph">
+    <div style="width: 100%; height: 400px; max-width:100%;">
+      <canvas :id="chart_id"></canvas>
+    </div>
+  </div>
+</template>
+
+<!-- template- -->
+<template id="template_card_info">
+  <div class="card_info" v-if="card_info_show" :class="card_info_color">
+    <h4>
+      <div class="d-flex mt-1 align-items-end	">
+        <span class="card_info_header d-block pr-4" v-html="card_info_header">Vente Amazon</span>
+        <span class="card_info_header d-block" v-html="card_info_header_nombre"></span>
+      </div>
+    </h4>
+    <div class="card_info_body">
+      <span class="infos">
+        ${ card_info_infos | numberFrench }</span>
+      <small class="infos_suffix" v-html="card_info_suffix"></small>
+      <span class="infos" v-html="card_info_suffix_after"></span>
+    </div>
+  </div>
+</template>
+
+<!-- template -->
+<template id="template_select_date">
+  <div>
+    <!-- selecteur de date -->
+    <div class="d-inline-block w-100 bg-light mt-3 mb-3 p-2">
+      <div class="d-inline-block mr-4">
+        <input_datepicker :input_firstday="input_firstday" :label="label_firstday" id_html="datefirstday"></input_datepicker>
+      </div>
+      <div class="d-inline-block mr-4">
+        <input_datepicker :input_lastday="input_lastday" :label="label_lastday" id_html="datelastday"></input_datepicker>
+      </div>
+      <div class="d-inline-block mr-4">
+        <inputsubmit label="filtrer" icone="fas fa-filter" @ev_savedatas_submit="inputsubmit"></inputsubmit>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- template donnée fiscale -->
+<template id="template_donnee_fiscale">
+  <table class="table table-bordered">
+    <tr>
+      <td>
+        Nombre de commandes
+        <br>
+        Total HT
+      </td>
+      <td>
+        <div class="number" v-html="nbre_cmdes"></div>
+        <div class="number" v-html="total_nbre_cmdes"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Nombre de remboursements
+        <br>
+        Total HT
+      </td>
+      <td>
+        <div class="number" v-html="nbre_rbmt"></div>
+        <div class="number" v-html="total_nbre_rbmt"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Produit HT (CA)
+      </td>
+      <td>
+        <div class="number" v-html="product_ht_ca"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        ${label_tva_product}
+      </td>
+      <td>
+        <div class="number" v-html="product_ht_ca_tva"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Frais de port HT
+      </td>
+      <td>
+        <div class="number" v-html="frais_port"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        ${label_tva_port}
+      </td>
+      <td>
+        <div class="number" v-html="frais_port_tva"></div>
+      </td>
+    </tr>
+  </table>
+</template>
+
+<!-- modal boostrap -->
+<template id="template-modal-simple">
+  <div>
+    <!-- Modal (empeche d'ecrire dans l'input type text tabindex="-1" )-->
+    <div class="modal fade" :id="id_modal" role="dialog" :aria-labelledby="id_modal+'Label'" aria-hidden="true">
+      <div class="modal-dialog modal-lg" :class="modal_position" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <slot name="modal_header" :id="id_modal + 'Label'">
+              Titre modal..
+            </slot>
+            <h5 class="modal-title" :id="id_modal+'Label'" v-html="titre_modal" v-if="titre_modal != ''"></h5>
+            <i class="fas fa-sync d-none fa-spin ml-4 mt-2 text-primary"></i>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- custom template -->
+            <component v-bind:is="template_modal_body" :modal_body="datas_modal_body" :doaction="actionparent" :titre_modal="titre_modal" @ev_modal_simple="event_modal_simple"></component>
+          </div>
+          <div class="modal-footer ">
+            <component v-bind:is="template_modal_footer" :modal_footer="datas_modal_footer"></component>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- modal custom -->
+<template id="template-modal-cumstom">
+  <div>
+    <!-- Modal -->
+    <div class="modal-custom" :id="id_modal" role="dialog" :aria-labelledby="id_modal+'Label'" aria-hidden="true">
+      <div class="modal-dialog-custom" :class="modal_position" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" :id="id_modal+'Label'" v-html="titre_modal"></h5>
+            <button type="button" class="close" aria-label="Close" @click="close_and_false()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- custom template -->
+            <component v-bind:is="template_modal_body" :modal_body="datas_modal_body" :doaction="actionparent"></component>
+          </div>
+          <div class="modal-footer ">
+            <div class="d-flex justify-content-end">
+              <span class="btn btn-sm btn-outline-warning click-pointer mr-4" @click="close_and_false()" v-html="text_void"></span>
+              <span class="btn btn-sm btn-outline-danger click-pointer" @click="close_and_true()" v-html="text_apply"></span>
+            </div>
+            <component v-bind:is="template_modal_footer" :modal_footer="datas_modal_footer"></component>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- alert -->
+<template id="template-alert">
+  <div >
+    <div :class="class_alert" :attribut="alert_attribut_class" role="alert" :id="alert_id_html" v-if="show_alert">
+      <div v-html="alert_message"></div>
+      <component v-bind:is="alert_template" @ev_alert_action="alert_action" :sub_datas="datas"></component>
+      <button type="button" class="close" aria-label="Close">
+        <span aria-hidden="true" @click="closeByParent">&times;</span></button>
+    </div>
+  </div>
+</template>
+
+<!-- form-accordion -->
+<template id="template-accordion">
+  <div>
+    <div class="accordion" :id="accordion_id" v-for="(accordion, index) in accordions">
+      <div class="card">
+        <div class="card-header" :id="'heading-'+index">
+          <h5 class="mb-0">
+            <span class="btn btn-link" @click="manage_collapse($event)" :data-target="'#collapse-'+index" :aria-controls="'collapse-'+index" v-html="accordion.title"></span></h5>
+        </div>
+        <div :id="'collapse-'+index" class="collapse " :aria-labelledby="'heading-'+index" :data-parent="'#'+accordion_id">
+          <div class="card-body">
+            <component v-bind:is="template_accordion" :datas="accordion.body"></component>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- Load templates or template bulider -->
+<template id="template-load-template">
+  <div>
+    <div role="document">
+      <div class="page-content">
+        <div class="page-header" v-if="page_title">
+          <h5 class="page-title" v-html="page_title_decode"></h5>
+        </div>
+        <div class="page-body">
+          <!-- custom template -->
+          <component v-bind:is="template_page_body" :page_body="datas_page_body" :doaction="actionparent" @ev_sous_template_action="sous_template_action"></component>
+        </div>
+        <div class="page-footer " v-if="template_page_footer">
+          <component v-bind:is="template_page_footer" :page_footer="datas_page_footer"></component>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<template id="template-read-file-csv">
+  <div>
+    <div class="form-group">
+      <label :for="id_html" :label="label"></label>
+      <input type="file" class="form-control" :id="id_html" accept=".txt, .csv" @change="read_file($event)"/>
+    </div>
+    <a class="float-right text-info" :href="link_example" v-html="name_example"></a>
+  </div>
+</template>
+
+<template id="template-modal-configs">
+  <div>
+    <div>
+
+      <input_select_v2 :label="'Selectionner le compte Quicbook'" :input="current_compagny" :options="list_compagny" @ev_input="select_compagny"></input_select_v2>
+      <div v-if="current_compagny != '9130347044451506'">
+        <input_radios_v2 :options="dev_evolution_options" :input="dev_evolution" v-if="current_compagny && current_compagny.value != '9130347044451506'" @ev_input="select_mode_dev"></input_radios_v2>
+      </div>
+    </div>
+    <hr>
+    <div>
+      <h4>Ajouter une compagnie</h4>
+      <div class="row">
+        <div v-for="(config, index) in configs" class="col-md-6">
+          <input_text_v2 :label="config.label" :input="configs[index]" v-if="config.type_input == 'text' " :id_html="'field'+index"></input_text_v2>
+          <input_radio_v2 :label="config.label" :input="configs[index]" v-if="config.type_input == 'radio' " :id_html="'field'+index"></input_radio_v2>
+        </div>
+        <div class="col-sm-12">
+          <hr>
+          <h5>tax_code_ref</h5>
+        </div>
+        <div v-for="(config, index) in tax_code_ref" class="col-md-6">
+          <input_text_v2 :label="config.label" :input="configs[index]" v-if="config.type_input == 'text' " :id_html="'field'+index"></input_text_v2>
+        </div>
+        <div class="col-sm-12">
+          <hr>
+          <h5>tax_rate_ref</h5>
+        </div>
+        <div v-for="(config, index) in tax_rate_ref" class="col-md-6">
+          <input_text_v2 :label="config.label" :input="configs[index]" v-if="config.type_input == 'text' " :id_html="'field'+index"></input_text_v2>
+        </div>
+        <div class="col-md-12 mt-4">
+          <span class="btn btn-sm btn-outline-success float-right " @click="save_config">
+            Enregistrer
+          </span>
+        </div>
+      </div>
+    </div>
+    <load_data_ajax_get :url="url_get" :datas="queries" :headers="headers" @ev_data_from_ajax="data_from_ajax" :trigger_loanding="trigger_loanding"></load_data_ajax_get>
+    <send_data_ajax :url="url_post" :headers="headers" @ev_data_from_ajax="data_from_ajax" :datas="post_datas" :trigger_loanding="trigger_post_loanding"></send_data_ajax>
+  </div>
+</template>
+
+<template id="template-comptaheader">
+  <div>
+    <!-- selecteur de date -->
+    <div class="d-block bg-light mt-3 p-2 mt-5">
+      <div class="d-inline-block mr-4">
+        <input_datepicker :defaultvalue="defaultvalue_firstday" @input="apply_input_firstday" :label="label_firstday" id_html="datefirstday"></input_datepicker>
+      </div>
+      <div class="d-inline-block mr-4">
+        <input_datepicker :defaultvalue="defaultvalue_lastday" @input="apply_input_lastday" :label="label_lastday" id_html="datelastday"></input_datepicker>
+      </div>
+      <div class="d-inline-block mr-4">
+        <inputsubmit label="filtrer" icone="fas fa-filter" @ev_savedatas_submit="inputsubmit"></inputsubmit>
+      </div>
+      <span class="btn-group btn-group-sm float-right" role="group">
+        <span class="btn btn-sm  " v-bind:class=" [(modedebug > 0) ? 'btn-outline-primary' : 'btn-primary'] " @click="select_tab" data-modedebug="-1">
+          PROD
+        </span>
+        <span class="btn btn-sm  " v-bind:class=" [(modedebug > 0) ? 'btn-primary' : 'btn-outline-primary'] " @click="select_tab" data-modedebug="1">
+          TEST
+        </span>
+      </span>
+      <span class="btn btn-sm float-right" @click="open_config_modal">
+        <i class="fas fa-cogs"></i>
+      </span>
+    </div>
+
+    <div class="d-block mt-3 p-2 mt-5" v-if="modedebug > 0">
+      <accordion :accordions="requests" :accordion_id="'accordion_requests_datas'" :template_accordion="'html_div'"></accordion>
+    </div>
+  </div>
+</template>
+
+<!-- permet de supprimer certains type de facture (correction patch) -->
+<template id="template-deletepayment">
+  <div>
+    <input_select_v2 :label="'Selectionner la plateforme'" :options="plateformes" :input="plateforme" class="d-none"></input_select_v2>
+    <input_textarea_string :label="'Requete sql'" :name="datasql" class="mb-4" @ev_input="textarea_input"></input_textarea_string>
+    <div class="mb-4">
+      <span class="btn btn-sm btn-outline-info mr-3" @click="test_request">
+        Tester la requete
+      </span>
+      <span class="btn btn-sm btn-outline-success mr-3" @click="void_payment">
+        Supprimer les paiements
+      </span>
+    </div>
+    <div>
+      <p :class="class_txt" v-html="message"></p>
+    </div>
+    <accordion :accordions="deletepayment" :accordion_id="'deletepayment'" :template_accordion="'html_div'"></accordion>
+    <send_data_ajax :url="url_post" :headers="headers" @ev_data_from_ajax="data_from_ajax" :datas="post_datas" :trigger_loanding="trigger_post_loanding"></send_data_ajax>
+  </div>
+</template>
+
+<template id="template-manage-connect">
+  <div>
+    <!-- selecteur de date -->
+    <div :class="[(custom_class)? custom_class+' d-block':'d-block bg-light']">
+      <div class="row">
+        <div :class="[(custom_class_block_filter != '')? custom_class_block_filter+' filtre-dynamique' : 'col-md-6 filtre-dynamique']">
+          <div class="mw-600" v-if="show_button_filter">
+            <filtre-compta-shopify :configs_filtre="compta_configs" :template_additional_filter="template_additional_filter" @ev_apply_filter="apply_filter"></filtre-compta-shopify>
+          </div>
+        </div>
+        <div class="col-md-6" v-if="show_select_qb">
+          <span class="btn-group btn-group-sm float-right" role="group">
+            <span class="btn btn-sm  " v-bind:class=" [(modedebug > 0) ? 'btn-outline-primary' : 'btn-primary'] " @click="select_tab" data-modedebug="-1">
+              PROD
+            </span>
+            <span class="btn btn-sm  " v-bind:class=" [(modedebug > 0) ? 'btn-primary' : 'btn-outline-primary'] " @click="select_tab" data-modedebug="1">
+              TEST
+            </span>
+          </span>
+          <span class="btn btn-sm float-right" @click="open_config_modal">
+            <i class="fas fa-cogs"></i>
+          </span>
+        </div>
+      </div>
+
+    </div>
+    <!-- -->
+    <div class="d-block mt-3 p-2 mt-5" v-if="modedebug > 0 && requests && requests.length && requests.length > 0">
+      <accordion :accordions="requests" :accordion_id="accordion_id" :template_accordion="template_accordion"></accordion>
+    </div>
+    <!-- -->
+    <get-configs @ev_get_compta_configs="get_compta_configs"></get-configs>
+    <!-- -->
+    <modal_simple v-if="show_select_qb" :actionparent="actionparent_config" :id_modal="'model-confis'" :template_modal_body="'modal-configs'" :datas_modal_body="configs" :titre_modal_preview="titre_config"></modal_simple>
+  </div>
+</template>
+
+<template id="template-get-configs">
+  <div>
+    <span class="get-config"></span>
+  </div>
+</template>
+
+<template id="template-display-company-infos">
+  <div >
+    <div v-if="show_company_infos">
+      <div class="alert alert-primary mt-5 text-center rounded">
+        <h4 v-html="QB_compte_title"></h4>
+      </div>
+    </div>
+    <get-configs @ev_get_compta_configs="get_compta_configs"></get-configs>
+  </div>
+</template>
+
+<template id="template-createorder">
+  <div>
+    <div class="d-none">
+      Commande :
+      <strong>
+        ${modal_body.id_order}
+      </strong>
+    </div>
+    <div class="alert_static_message">
+      <alert
+        @ev_alert_action="alert_action"
+        :alert_message="alert_message_static"
+        :show_alert="show_alert_static"
+        :alert_attribut_class="alert_attribut_class_static"
+        @ev_alert_close="alert_close_static"
+        :alert_template='alert_template'
+        :datas="{use_next_code_DocNumber:use_next_code_DocNumber}"></alert>
+      <div class="d-none">
+        <pre v-if="flux && (modedebug > 0) && (modal_body.modedebug > 0)" v-html="flux"></pre>
+        <pre v-if="querys && (modedebug > 0) && (modal_body.modedebug > 0)" v-html="querys"></pre>
+      </div>
+    </div>
+    <div v-if="order_bd.qb_doc_number">
+      <div class=" d-flex ">
+        <h4>Facture n<sup style="font-size: 60%;">o</sup>
+          ${order_bd.qb_doc_number}<span v-if="order_bd.qb_payment_number">, Paiement n<sup style="font-size: 60%;">o</sup>
+            ${order_bd.qb_payment_number}</span>
+          <span class="text-danger" v-if="!show_void_invoice && show_text_void">ANNULÉE</span></h4>
+      </div>
+    </div>
+    <div v-if="account.name">
+      <div class="mb-2 d-flex justify-content-between">
+        <strong v-html="account.name"></strong>
+        <span v-html="account.TransactionLocationType"></span>
+      </div>
+    </div>
+    <div v-if="invoice.Line || cart_array[0]" class="mb-4">
+      <h3 v-if="(modal_body.modedebug > 0)">
+        <span class="btn-group btn-group-sm float-right" role="group">
+          <span class="btn btn-sm  " v-bind:class=" [(modedebug > 0) ? 'btn-outline-primary' : 'btn-primary'] " @click="select_tab" data-modedebug="-1">
+            Normal
+          </span>
+          <span class="btn btn-sm  " v-bind:class=" [(modedebug > 0) ? 'btn-primary' : 'btn-outline-primary'] " @click="select_tab" data-modedebug="1">
+            DEBUG
+          </span>
+        </span>
+      </h3>
+      <table class="table table-striped table-cart">
+        <thead>
+          <tr>
+            <th >#Line</th>
+            <th >Sku</th>
+            <th >Prix</th>
+            <th >Quantité</th>
+            <th >Montant TTC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(colonnes, index) in cart_array">
+            <td>${index++}</td>
+            <td v-for="(col, ind) in cart_header" v-html="colonnes[ind]"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-3 d-none" v-if="discount.code">
+        <table class="table table-striped table-cart">
+          <thead>
+            <tr>
+              <th >Discount code</th>
+              <th >Valeur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${discount.code}</td>
+              <td>${discount.amount}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-3 d-flex flex-wrap sous-totals" v-if="sub_total">
+        <p class="d-flex w-100 justify-content-end">
+          <span>Sous-total TTC</span>
+          <span>${sub_ttc | currency}</span></p>
+        <p class="d-flex w-100 justify-content-end">
+          <span>Remise globale
+            <br>
+            ${discount.code}</span>
+          <span>${sub_discount | currency}</span></p>
+        <p class="d-flex w-100 justify-content-end">
+          <span>Frais de port</span><span>${sub_shipping_total | currency}</span></p>
+        <p class="d-flex w-100 justify-content-end">
+          <span>Total TTC</span><span>${sub_total | currency }</span></p>
+      </div>
+
+      <pre v-if="modal_body.modedebug > 0 && (invoice.line || invoice.customerref)">${invoice}</pre>
+      <pre v-if="modal_body.modedebug > 0 && payments.paymentrefnum">${payments}</pre>
+    </div>
+    <div class="d-flex justify-content-between mb-4 mb-2">
+      <div class="d-flex flex-wrap margin-bottom-item" v-if="(modal_body.modedebug > 0)">
+        <button class="btn btn-outline-success btn-sm mr-4" @click="test_invoice" v-if="(modedebug > 0)">
+          JSON Facture
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+        <create-customer-qb v-if="(modedebug > 0) && current_compagny == '9130347038344016'" :configs="modal_body" :plateforme="modal_body.plateforme" @ev_create_customer_v2="create_customer_v2"></create-customer-qb>
+        <!-- <button class="btn btn-outline-success btn-sm mr-4" @click="create_invoice_test" > Mode test <i class="fas fa-sync d-none fa-spin "></i></button> -->
+        <!-- <button class="btn btn-outline-success btn-sm mr-4" @click="create_invoice_andpayement_test" > Mode test <i class="fas fa-sync d-none fa-spin "></i></button> -->
+        <button class="btn btn-outline-success btn-sm mr-4" @click="create_invoice_test">
+          Créer la facture
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+        <button class="btn btn-outline-success btn-sm mr-4" @click="valider_payment_test">
+          Valider le payment
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+        <button class="btn btn-outline-success btn-sm mr-4" @click="void_invoice" v-if="show_void_invoice">
+          Annuler la facture
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+        <button class="btn btn-outline-success btn-sm mr-4 d-none" @click="create_salereceipt">
+          Creer le réçu
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+      </div>
+
+      <div class="d-flex flex-wrap margin-bottom-item" v-if="!(modal_body.modedebug > 0)">
+        <button class="btn btn-outline-success btn-sm mr-4" @click="create_invoice_all" v-if="show_create_invoice">
+          Créer la facture
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+        <button class="btn btn-outline-success btn-sm mr-4" @click="void_invoice" v-if="show_void_invoice">
+          Annuler la facture
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+        <button class="btn btn-outline-success btn-sm mr-4 d-none" @click="create_invoice_all_next_code_facture" v-if="show_create_invoice" id="create-invoice-all-next-code-facture">
+          Réessayer avec le numéro suivant
+          <i class="fas fa-sync d-none fa-spin "></i>
+        </button>
+      </div>
+
+      <div class="d-flex ">
+        <div>
+          <button class="btn btn-outline-success btn-sm" @click="get_token" v-if="!token_url_refresh">
+            get the token to refresh
+            <i class="fas fa-sync d-none fa-spin "></i>
+          </button>
+          <span :href="token_url_refresh" class="btn btn-outline-success btn-sm ml-4" v-if="token_url_refresh" @click="open_windows">Refresh token</span>
+        </div>
+      </div>
+    </div>
+    <!-- check Flux -->
+    <accordion class="mb-4" :accordions="accordions" :accordion_id="'accordion_flux_datas'" :template_accordion="'custom_display'" v-if="(modedebug > 0)"></accordion>
+  </div>
+</template>
+
+<template id="template-button_add_client">
+  <div>
+    <span class="btn btn-outline-primary btn-sm mr-4 " @click="update_customer">
+      Mettre à jour le client
+      <i class="fas fa-sync d-none fa-spin "></i>
+    </span>
+    <span class="btn btn-outline-primary btn-sm mr-4 " @click="create_customer">
+      Créer le client
+      <i class="fas fa-sync d-none fa-spin "></i>
+    </span>
+  </div>
+</template>
+
+<template id="template-button_next_code">
+  <div>
+    <button class="btn btn-outline-primary btn-sm " @click="generate_next_code">
+      <span v-html="text_button"></span>
+      <i class="fas fa-sync d-none fa-spin "></i>
+    </button>
+  </div>
+</template>
+
+<template id="button-create-customer-qb">
+  <div>
+    <button class="btn btn-outline-success btn-sm mr-4" @click="create_customer">
+      Créer le client
+      <i class="fas fa-sync d-none fa-spin "></i>
+    </button>
+    <button class="btn btn-outline-success btn-sm mr-4 d-none" @click="create_customer_custom_field">
+      Créer le client
+      <i class="fas fa-sync d-none fa-spin "></i>
+    </button>
+    <modal_costum
+      :toggle_open="toggle_open_modal"
+      @ev_modal_action_annulee="modal_action_annulee"
+      @ev_modal_action_appliquee="modal_action_appliquee"
+      :titre_modal_preview="titre_modal"
+      :datas_modal_body="datas_modal_body"
+      :template_modal_body="template_modal_body"
+      :text_apply="modal_text_apply"></modal_costum>
+    <send_data_ajax :url="url_post" :headers="headers" @ev_data_from_ajax="data_from_ajax" :datas="post_datas" :trigger_loanding="trigger_post_loanding"></send_data_ajax>
+  </div>
+</template>
+
+<!-- Template pour surcharger les champs lors de la creation d'un client QB -->
+<template id="override-customer-qb">
+  <div>
+    ${modal_body}
+    <input_text_v2 :label="'Display name'" :input="displayname"></input_text_v2>
+  </div>
+</template>
+
+<template id="template-filtre-compta-shopify">
+  <div>
+    <div class="container-popup">
+      <button class="btn btn-outline-success " @click="show_hide_popup">
+        filtrer
+        <i class="fas fa-filter pl-1"></i>
+      </button>
+      <div class="container-body " :class="[ (show_popup)? '':'d-none' ]">
+        <div class="border p-3 mt-2">
+
+          <div class="d-flex mb-3 justify-content-between">
+            <input_select_v2 class="mv-30pc" :label="'Date'" :input="input_date" :options="options_date" @ev_input="select_month"></input_select_v2>
+            <input-datepicker-v2 class="mv-30pc" :input="input_firstday" :label="label_firstday" id_html="datesdsdrstdayss"></input-datepicker-v2>
+            <input-datepicker-v2 class="mv-30pc" :input="input_lastday" :label="label_lastday" id_html="datelastdaydsds"></input-datepicker-v2>
+          </div>
+          <input_select_v2 :label="'Passerelle'" :input="passerelle" :options="list_passerelle"></input_select_v2>
+          <!-- Charge les elments de filtres supplementaires -->
+          <component
+            v-bind:is="template_additional_filter"
+            :configs_filtre="configs_filtre"
+            @ev_data_from_addition_template="data_from_addition_template"
+            :trigger_reset_data="trigger_reset_data_additional_template"
+            :trigger_ask_data="trigger_ask_data_additional_template"></component>
+          <div class="d-flex justify-content-between">
+            <button class="btn btn-secondary btn-sm " @click="reinitialisation">Restaurer</button>
+            <button class="btn btn-outline-success btn-sm " @click="apply_filter">
+              Appliquer
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="full-cover" :class="[ (show_popup)? '':'d-none' ]" @click="show_hide_popup"></div>
+      <route-compta :token="token" ref="sendDataAjax" :configs="configs_filtre" @ev_data_from_ajax="data_from_ajax"></route-compta>
+    </div>
+  </div>
+</template>
+
+<!-- Pour envoyer ou recevoir les données de l'app compta -->
+<template id="template-route-compta">
+  <div>
+    <send_data_ajax :url="url_post" :headers="headers" @ev_data_from_ajax="data_from_ajax" :datas="post_datas" :trigger_loanding="trigger_post_loanding"></send_data_ajax>
+  </div>
+</template>

@@ -1,98 +1,11 @@
-<div class="row">
-	<nav class="col-md-12 col-12 ">
-		<div class="sidebar-sticky0 mt-3">
-			<ul class="nav nav-tabs">
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						if (! isset($_GET['page'])) {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>">
-						<i class="fas fa-home mr-2"></i>
-						Home
-					</a>
-				</li>
-
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						if (isset($_GET['page']) && $_GET['page'] == 'comptabilite') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=comptabilite">
-						<i class="fas fa-shopping-cart mr-2 "></i>
-						Commandes
-					</a>
-				</li>
-
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						if (isset($_GET['page']) && $_GET['page'] == 'donnee-fiscale') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=donnee-fiscale">
-						<i class="fas fa-rss mr-2"></i>
-						Données fiscales
-					</a>
-				</li>
-				<li class="nav-item d-none">
-					<a class="nav-link <?php
-						
-						if (isset($_GET['page']) && $_GET['page'] == 'flux-amazon') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=flux-amazon">
-						<i class="fas fa-rss mr-2"></i>
-						Flux Amazon complet
-					</a>
-				</li>
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						if (isset($_GET['page']) && $_GET['page'] == 'remboursements') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=remboursements">
-						<i class="fas fa-rss mr-2"></i>
-						Remboursements
-					</a>
-				</li>
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						if (isset($_GET['page']) && $_GET['page'] == 'compta-amazon') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=compta-amazon">
-						<i class="fas fa-shopping-cart mr-2"></i>
-						Comptabilité Amazon
-					</a>
-				</li>
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						                if (isset($_GET['page']) && $_GET['page'] == 'compta-shopify') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=compta-shopify">
-						<i class="fas fa-shopping-cart mr-2"></i>
-						Comptabilité Shopify
-					</a>
-				</li>
-				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-						if (isset($_GET['page']) && $_GET['page'] == 'import') {
-						                  echo 'active';
-						                }
-						                ?>" href="<?php echo $ROOT; ?>?page=import">
-						<i class="fas fa-cog mr-2"></i>
-						Import
-					</a>
-				</li>
-			</ul>
-		</div>
-	</nav>
-</div>
+<nav class="navbar navbar-light fixed-top bg-white flex-md-nowrap p-0 header ">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0 text-center bg-white shadow-none" href="/"><img
+        src="https://cdn.shopify.com/s/files/1/0013/2123/8594/t/5/assets/logo-coco-310.png?4934" class="logo" /> </a>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item">
+        <a class="nav-link" href="/gestionBD/dbninja" target="_blanck">
+          <i class="fas fa-database mr-2"></i> gestion BD
+        </a>
+      </li>
+    </ul>
+  </nav>

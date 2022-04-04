@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link
+		rel="icon" type="image/png" sizes="32x32" href="//cdn.shopify.com/s/files/1/0013/2123/8594/t/5/assets/favicon-32x32.png?1823137142525308715">
+		<!-- Google font Roboto -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
+
+		<title>
+			{% block title %}Comptabilité!
+			{% endblock %}
+		</title>
+
+		{% block stylesheets %}
+			<!-- Jquery-ui -->
+			<link href="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.min.css") }}" rel="stylesheet">
+			<link
+			href="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.theme.css") }}" rel="stylesheet">
+
+			<!-- Bootstrap core CSS -->
+			<link href="{{ asset("/comptability/plugin/bootstrap-4.1.1/dist/css/bootstrap.min.css") }}" rel="stylesheet">
+
+			<!-- Font Awesome  -->
+			<!-- Our project just needs Font Awesome Solid[fas fa-user] + Brands[fab fa-github-square] + regular[far fa-calendar-alt] -->
+			<link href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/fontawesome.min.css") }}" rel="stylesheet"> <link href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/brands.min.css") }}" rel="stylesheet">
+			<link href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/solid.min.css") }}" rel="stylesheet">
+			<link
+			href="{{ asset("/comptability/plugin/fontawesome-free-5.6.3-web/css/regular.min.css") }}" rel="stylesheet">
+
+			<!-- Custom styles for this template -->
+			<link href="{{ asset("/comptability/css/dashboard.css") }}" rel="stylesheet">
+			<link href="{{ asset("/comptability/css/style.css") }}" rel="stylesheet">
+
+		{% endblock %}
+
+		{% block javascript %}
+
+			<!-- Jquery -->
+			<script src="{{ asset("/comptability/js/jquery.min.js") }}"></script>
+			<!-- vuejs -->
+			<script src="{{ asset("/componnets-vuejs/js/vue.js") }}"></script>
+			<script type="text/javascript" src="https://cdn.jsdelivr.net/accounting.js/0.3.2/accounting.js"></script>
+
+			<script src="{{ asset("/comptability/js/vuejs/vuejs_component.js") }}"></script>
+
+			<script src="{{ asset("/comptability/js/config.js") }}"></script>
+			<script src="{{ asset("/componnets-vuejs/js/moment-with-locales.min.js") }}"></script>
+			<script src="{{ asset("/componnets-vuejs/js/axios.min.js") }}"></script>
+			<script src="{{ asset("/componnets-vuejs/js/form-elements.js") }}"></script>
+
+			<!-- Chart -->
+			<script src="{{ asset("/comptability/plugin/chart/chart.min.js") }}"></script>
+			<!-- vue-Chart -->
+			<script src="{{ asset("/comptability/plugin/chart/vue-chartjs.min.js") }}"></script>
+			<!-- CSV parse -->
+			<script src="{{ asset("/comptability/plugin/PapaParse/papaparse.min.js") }}"></script>
+			<!--  -->
+			<script src="{{ asset("/comptability/js/create-order.js") }}"></script>
+		{% endblock %}
+
+
+	</head>
+	<body>
+		{% include "layouts/comptability/_nav.html.twig" %}
+
+		<div class="container-fluid">
+			<div class="row mt-3">
+
+
+				<main
+					role="main" class="col-md-12 col-12 pt-2">
+					{# Js to execute for all vueJS #}
+					<script type="text/javascript" src="{{ asset("/comptability/js/nutribe-admin.js") }}"></script>
+
+					{% block body %}{% endblock %}
+					<div id="displayErrorAjax"></div>
+				</main>
+			</div>
+		</div>
+		{% block bodyjs %}
+			<!-- include template -->
+			{% include "vuejs/vuejs-template.html.twig" %}
+			{% include "form-elements.html.twig" %}
+			?>
+
+			<!-- Jquery-ui -->
+			<script src="{{ asset("/comptability/plugin/jquery-ui/jquery-ui.min.js") }}"></script>
+
+			<!-- Bootstrap core JavaScript
+			    ================================================== -->
+			<!-- Placed at the end of the document so the pages load faster -->
+			<script src="{{ asset("/comptability/plugin/bootstrap-4.1.1/assets/js/vendor/popper.min.js") }}"></script>
+			<script src="{{ asset("/comptability/plugin/bootstrap-4.1.1/dist/js/bootstrap.min.js") }}"></script>
+			<script src="{{ asset("/comptability/plugin/js-cookie/js.cookie.min.js") }}"></script>
+		{% endblock %}
+	</body>
+</html>
