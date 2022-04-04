@@ -13,8 +13,6 @@ class ComptabilityController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('comptability/index.html.twig', [
-            
-        ]);
+        return $this->render('comptability/index.html.twig');
     }
 }

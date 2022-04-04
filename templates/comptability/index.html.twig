@@ -1,9 +1,23 @@
-<!DOCTYPE html>
-
-<title>Hello ComptabilityController!</title>
+{% extends "layouts/comptability-base.html.twig" %}
 
 {% block body %}
+	<section id="home_page" class="mt-4">
+		<manage-connect @ev_getconfig__manage_connect="getconfig__manage_connect"></manage-connect>
 
+        {% include "layouts/comptability/_main-nav.html.twig" %}
 
-<p>Bienvenue dans la partie compta</p>
-{% endblock %}
+		<hr>
+			<display-company-infos></display-company-infos>
+			<order-products :configs="config__manage_connect"></order-products>
+			<hr>
+
+		</section>
+
+		<script src="{{ asset("componnets-vuejs/files/lib/tg/tabGes.umd.min.js")}}"></script>
+		<script src="{{ asset("componnets-vuejs/files/lib/BuilderForms/BuilderForms.umd.min.js")}}"></script>
+		<script src="{{ asset("nutribeapp/order-products/files/lib/OrderProducts/OrderProducts.umd.min.js")}}"></script>
+
+		<link href="{{ asset("nutribeapp/order-products/files/lib/OrderProducts/OrderProducts.css")}}" rel="stylesheet">
+
+		<script type="text/javascript" src="{{ asset("/comptability/js/home_page.js")}}"></script>
+	{% endblock %}
