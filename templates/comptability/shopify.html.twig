@@ -1,0 +1,27 @@
+{% extends "layouts/comptability-base.html.twig" %}
+
+{% block body %}
+
+
+<section id="commandes" class="mt-4">
+  <span class="get-datatype d-none" datatype="BD_commandes_shopify"></span>
+
+  <manage-connect @ev_getconfig__manage_connect="getconfig__manage_connect"></manage-connect>
+
+
+  {% include "layouts/comptability/_main-nav.html.twig" %}
+  <display-company-infos></display-company-infos>
+
+  <commandes :configs="config__manage_connect" :command_with_chart="false" :external_configs="true" ref="commandes"></commandes> 
+</section>
+
+<script src="{{ asset("componnets-vuejs/files/lib/tg/tabGes.umd.min.js")}}"></script>
+<script src="{{ asset("componnets-vuejs/files/lib/BuilderForms/BuilderForms.umd.min.js")}}"></script>
+<script src="{{ asset("nutribeapp/commandes/files/lib/Commandes/Commandes.umd.min.js")}}">
+</script>
+
+<link href="{{ asset("nutribeapp/commandes/files/lib/Commandes/Commandes.css")}}" rel="stylesheet">
+
+<!-- shopify and Amazone -->
+<script type="text/javascript" src="{{ asset("/comptability/js/commandes.js")}}"></script>
+{% endblock %}

@@ -77,12 +77,12 @@
 					</a>
 				</li>
 				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-																		                if (isset($_GET['page']) && $_GET['page'] == 'compta-shopify') {
-																		                  echo 'active';
-																		                }
-																		                ?>" href="<?php echo $ROOT; ?>?page=compta-shopify">
+        {% if path(app.request.attributes.get('_route'))== path("app_comptability_shopify")  %}
+						{% set active = "active" %}
+					{% else %}
+						{% set active = "" %}
+					{% endif %}
+					<a class="nav-link {{ active }}" href="{{ path("app_comptability_shopify") }}">
 						<i class="fas fa-shopping-cart mr-2"></i>
 						Comptabilité Shopify
 					</a>
