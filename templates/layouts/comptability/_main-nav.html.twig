@@ -1,31 +1,21 @@
+{% if path(app.request.attributes.get('_route'))== path("app_comptability_order")  %}
+{% set active = "active" %}
+{% else %}
+  {% set active = "active" %}
+    {% endif %}
+
 <div class="row">
 	<nav class="col-md-12 col-12 ">
   	<div class="sidebar-sticky0 mt-3">
       <ul class="nav nav-tabs">
             	<li class="nav-item ">
-                <a class="nav-link <?php
-
-if (! isset($_GET['page'])) {
-                  echo 'active';
-                }
-                ?>" href="<?php
-
-echo $ROOT;
-                ?>" >
+                <a class="nav-link {{ active }}" href="{{ path("app_comptability") }}" >
                   <i class="fas fa-home mr-2"></i> Home
                 </a>
                </li>
 
               	<li class="nav-item ">
-                <a class="nav-link <?php
-
-if (isset($_GET['page']) && $_GET['page'] == 'comptabilite') {
-                  echo 'active';
-                }
-                ?>" href="<?php
-
-echo $ROOT;
-                ?>?page=comptabilite" >
+                <a class="nav-link {{ active }}" href="{{ path("app_comptability_order") }}" >
                 	<i class="fas fa-shopping-cart mr-2 "></i>  Commandes
                 </a>
                </li>
