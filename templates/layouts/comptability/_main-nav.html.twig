@@ -35,10 +35,10 @@
 				<li class="nav-item ">
 					<a class="nav-link <?php
 						
-																		if (isset($_GET['page']) && $_GET['page'] == 'donnee-fiscale') {
-																		                  echo 'active';
-																		                }
-																		                ?>" href="<?php echo $ROOT; ?>?page=donnee-fiscale">
+																								if (isset($_GET['page']) && $_GET['page'] == 'donnee-fiscale') {
+																								                  echo 'active';
+																								                }
+																								                ?>" href="<?php echo $ROOT; ?>?page=donnee-fiscale">
 						<i class="fas fa-rss mr-2"></i>
 						Données fiscales
 					</a>
@@ -46,10 +46,10 @@
 				<li class="nav-item d-none">
 					<a class="nav-link <?php
 						
-																		if (isset($_GET['page']) && $_GET['page'] == 'flux-amazon') {
-																		                  echo 'active';
-																		                }
-																		                ?>" href="<?php echo $ROOT; ?>?page=flux-amazon">
+																								if (isset($_GET['page']) && $_GET['page'] == 'flux-amazon') {
+																								                  echo 'active';
+																								                }
+																								                ?>" href="<?php echo $ROOT; ?>?page=flux-amazon">
 						<i class="fas fa-rss mr-2"></i>
 						Flux Amazon complet
 					</a>
@@ -57,10 +57,10 @@
 				<li class="nav-item ">
 					<a class="nav-link <?php
 						
-																		if (isset($_GET['page']) && $_GET['page'] == 'remboursements') {
-																		                  echo 'active';
-																		                }
-																		                ?>" href="<?php echo $ROOT; ?>?page=remboursements">
+																								if (isset($_GET['page']) && $_GET['page'] == 'remboursements') {
+																								                  echo 'active';
+																								                }
+																								                ?>" href="<?php echo $ROOT; ?>?page=remboursements">
 						<i class="fas fa-rss mr-2"></i>
 						Remboursements
 					</a>
@@ -77,7 +77,7 @@
 					</a>
 				</li>
 				<li class="nav-item ">
-        {% if path(app.request.attributes.get('_route'))== path("app_comptability_shopify")  %}
+					{% if path(app.request.attributes.get('_route'))== path("app_comptability_shopify")  %}
 						{% set active = "active" %}
 					{% else %}
 						{% set active = "" %}
@@ -88,12 +88,12 @@
 					</a>
 				</li>
 				<li class="nav-item ">
-					<a class="nav-link <?php
-						
-																		if (isset($_GET['page']) && $_GET['page'] == 'import') {
-																		                  echo 'active';
-																		                }
-																		                ?>" href="<?php echo $ROOT; ?>?page=import">
+					{% if path(app.request.attributes.get('_route'))== path("app_comptability_import")  %}
+						{% set active = "active" %}
+					{% else %}
+						{% set active = "" %}
+					{% endif %}
+					<a class="nav-link {{ active }}" href="{{ path("app_comptability_import") }}">
 						<i class="fas fa-cog mr-2"></i>
 						Import
 					</a>

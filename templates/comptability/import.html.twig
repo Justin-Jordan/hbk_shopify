@@ -1,0 +1,15 @@
+{% extends "layouts/comptability-base.html.twig" %}
+
+{% block body %}
+
+
+<div id="import-files" class="mt-4">
+	<manage-connect @ev_getconfig__manage_connect="getconfig__manage_connect"></manage-connect>
+	{% include "layouts/comptability/_main-nav.html.twig" %}
+	<display-company-infos></display-company-infos>
+	<hr>
+	<import-datas ref="importdatas"></import-datas>
+</div>
+<script src="{{ asset("nutribeapp/import-datas/files/ImportDatas.umd.min.js")}}"></script>
+<link href="{{ asset("nutribeapp/import-datas/files/ImportDatas.css")}}" rel="stylesheet">
+<script

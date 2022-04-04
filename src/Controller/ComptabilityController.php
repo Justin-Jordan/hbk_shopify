@@ -42,4 +42,12 @@ class ComptabilityController extends AbstractController
     {
         return $this->render('comptability/shopify.html.twig');
     }
+
+    /**
+     * @Route("/import", name="app_comptability_import")
+     */
+    public function import(): Response
+    {
+        return $this->render('comptability/import.html.twig');
+    }
 }
